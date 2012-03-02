@@ -1,0 +1,27 @@
+{
+    "name": "fp/badaboom-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 wise error catcher",
+    "keywords": ["Error", "Exception"],
+    "homepage": "https://github.com/formapro/FpBadaBoomBundle",
+    "license": "MIT",
+    "authors": [
+	{
+            "name": "Vadim Tyukov",
+            "email": "brainreflex@gmail.com"
+        },
+        {
+            "name": "Maksim Kotlyar",
+            "email": "kotlyar.maksim@gmail.com"
+        }        
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "fp/badaboom": "dev-not-approved",
+        "symfony/symfony": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Fp\\BadaBoomBundle": "../../" }
+    },
+    "target-dir": "Fp/BadaBoomBundle"
+}
