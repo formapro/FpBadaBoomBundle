@@ -1,0 +1,4 @@
+<?php
+
+$loader = include_once __DIR__ . '/../vendor/.composer/autoload.php';
+$loader->add('Fp\\BadaBoomBundle', __DIR__ . '/../../../');

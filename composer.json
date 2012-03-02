@@ -21,7 +21,7 @@
         "symfony/symfony": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Fp\\BadaBoomBundle": "../../" }
+        "psr-0": { "Fp\\BadaBoomBundle": "" }
     },
     "target-dir": "Fp/BadaBoomBundle"
 }
