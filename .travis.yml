@@ -1,0 +1,22 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+env:
+  - composer_params=""
+  - composer_params=" --install-suggests"
+
+before_script:
+  - wget http://getcomposer.org/composer.phar
+  - php composer.phar install $composer_params
+
+branches:
+  only:
+    master
+
+notifications:
+  email:
+    - kotlyar.maksim@gmail.com
+    - brainreflex@gmail.com
