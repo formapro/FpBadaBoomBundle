@@ -3,7 +3,7 @@ namespace Fp\BadaBoomBundle\Tests\ChainNode\Provider;
 
 use Fp\BadaBoomBundle\ChainNode\Provider\SessionProvider;
 
-class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
+class SessionProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
