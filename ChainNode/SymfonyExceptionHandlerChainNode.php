@@ -1,12 +1,16 @@
 <?php
-namespace Fp\BadaBoomBundle\ChainNode\Sender;
+namespace Fp\BadaBoomBundle\ChainNode;
 
 use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
 
 use BadaBoom\ChainNode\AbstractChainNode;
 use BadaBoom\DataHolder\DataHolderInterface;
 
-class HtmlSender extends AbstractChainNode
+/**
+ * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
+ * @since 4/10/12
+ */
+class SymfonyExceptionHandlerChainNode extends AbstractChainNode
 {
     /**
      * @var \Symfony\Component\HttpKernel\Debug\ExceptionHandler
@@ -22,8 +26,7 @@ class HtmlSender extends AbstractChainNode
     }
 
     /**
-     * @param \Exception $exception
-     * @param \BadaBoom\DataHolder\DataHolderInterface $data
+     * {@inheritdoc}
      */
     public function handle(\Exception $exception, DataHolderInterface $data)
     {

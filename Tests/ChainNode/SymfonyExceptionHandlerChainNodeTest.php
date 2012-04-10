@@ -1,17 +1,20 @@
 <?php
 namespace Fp\BadaBoomBundle\Tests\ChainNode\Sender;
 
-use Fp\BadaBoomBundle\ChainNode\Sender\HtmlSender;
+use Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode;
 
-class HtmlSenderTest extends \PHPUnit_Framework_TestCase
+/**
+ * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
+ * @since 4/10/12
+ */
+class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
      * @test
      */
     public function shouldBeSubClassOfAbstractSender()
     {
-        $rc = new \ReflectionClass('Fp\BadaBoomBundle\ChainNode\Sender\HtmlSender');
+        $rc = new \ReflectionClass('Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode');
         $this->assertTrue($rc->isSubclassOf('BadaBoom\ChainNode\AbstractChainNode'));
     }
 
@@ -20,7 +23,7 @@ class HtmlSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function couldBeConstructedWithExceptionHandlerAsArgument()
     {
-        new HtmlSender($this->createExceptionHandlerMock());
+        new SymfonyExceptionHandlerChainNode($this->createExceptionHandlerMock());
     }
 
     /**
@@ -41,7 +44,7 @@ class HtmlSenderTest extends \PHPUnit_Framework_TestCase
         )
         ;
 
-        $sender = new HtmlSender($this->createExceptionHandlerMock());
+        $sender = new SymfonyExceptionHandlerChainNode($this->createExceptionHandlerMock());
 
         $sender->nextNode($nextChainNodeMock);
 
@@ -64,21 +67,30 @@ class HtmlSenderTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $sender = new HtmlSender($exceptionHandlerMock);
+        $sender = new SymfonyExceptionHandlerChainNode($exceptionHandlerMock);
 
         $sender->handle($expectedException, $this->createDataHolderMock());
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\BadaBoom\DataHolder\DataHolderInterface
+     */
     protected function createDataHolderMock()
     {
         return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\BadaBoom\ChainNode\ChainNodeInterface
+     */
     protected function createChainNodeMock()
     {
         return $this->getMock('BadaBoom\ChainNode\ChainNodeInterface');
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpKernel\Debug\ExceptionHandler
+     */
     protected function createExceptionHandlerMock()
     {
         return $this->getMock('Symfony\Component\HttpKernel\Debug\ExceptionHandler', array('handle'));
