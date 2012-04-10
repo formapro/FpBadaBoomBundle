@@ -3,6 +3,10 @@ namespace Fp\BadaBoomBundle\Tests\ChainNode\Provider;
 
 use Fp\BadaBoomBundle\ChainNode\Provider\SessionProvider;
 
+/**
+ * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
+ * @since 4/10/12
+ */
 class SessionProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -104,16 +108,25 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
         $sessionProvider->handle($expectedException, $expectedDataHolder);
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Session\SessionInterface
+     */
     protected function createSessionMock()
     {
         return $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface');
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\BadaBoom\DataHolder\DataHolderInterface
+     */
     protected function createDataHolderMock()
     {
         return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\BadaBoom\ChainNode\ChainNodeInterface
+     */
     protected function createChainNodeMock()
     {
         return $this->getMock('BadaBoom\ChainNode\ChainNodeInterface');
