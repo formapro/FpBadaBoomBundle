@@ -39,9 +39,9 @@ class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('handle')
             ->with(
-            $this->equalTo($expectedException),
-            $this->equalTo($expectedDataHolderMock)
-        )
+                $this->equalTo($expectedException),
+                $this->equalTo($expectedDataHolderMock)
+            )
         ;
 
         $sender = new SymfonyExceptionHandlerChainNode($this->createExceptionHandlerMock());
