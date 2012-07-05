@@ -14,7 +14,7 @@ class SecurityContextProvider extends AbstractProvider
 
     protected $sectionName;
 
-    public function __construct(SecurityContextInterface $securityContext, $sectionName = 'security')
+    public function __construct(SecurityContextInterface $securityContext = null, $sectionName = 'security')
     {
         $this->securityContext = $securityContext;
 
@@ -23,7 +23,7 @@ class SecurityContextProvider extends AbstractProvider
 
     public function handle(\Exception $exception, DataHolderInterface $data)
     {
-        if ($token = $this->securityContext->getToken()) {
+        if ($this->securityContext && $token = $this->securityContext->getToken()) {
             $user = $token->getUser();
             if (is_string($user)) {
                 $data->set($this->sectionName, array(
