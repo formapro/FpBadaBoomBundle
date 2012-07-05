@@ -26,7 +26,7 @@ class SessionProvider extends AbstractProvider
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param string $sectionName
      */
-    public function __construct(SessionInterface $session, $sectionName = 'session')
+    public function __construct(SessionInterface $session = null, $sectionName = 'session')
     {
         $this->session = $session;
         $this->sectionName = $sectionName;
@@ -38,7 +38,9 @@ class SessionProvider extends AbstractProvider
      */
     public function handle(\Exception $exception, DataHolderInterface $data)
     {
-        $data->set($this->sectionName, $this->session->all());
+        if ($this->session) {
+            $data->set($this->sectionName, $this->session->all());
+        }
 
         $this->handleNextNode($exception, $data);
     }
