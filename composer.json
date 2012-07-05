@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "fp/badaboom": "1.0-dev",
+        "fp/badaboom": "1.0.x-dev",
         "symfony/symfony": "dev-master"
     },
     "autoload": {
