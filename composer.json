@@ -17,11 +17,16 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "fp/badaboom": "dev-not-approved",
+        "fp/badaboom": "1.0-dev",
         "symfony/symfony": "dev-master"
     },
     "autoload": {
         "psr-0": { "Fp\\BadaBoomBundle": "" }
     },
-    "target-dir": "Fp/BadaBoomBundle"
+    "target-dir": "Fp/BadaBoomBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
