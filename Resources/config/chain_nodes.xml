@@ -8,6 +8,7 @@
         <parameter key="fp_badaboom.chain_node.provider.security_context.class">Fp\BadaBoomBundle\ChainNode\Provider\SecurityContextProvider</parameter>
         <parameter key="fp_badaboom.chain_node.provider.request.class">Fp\BadaBoomBundle\ChainNode\Provider\RequestProvider</parameter>
         <parameter key="fp_badaboom.chain_node.provider.session.class">Fp\BadaBoomBundle\ChainNode\Provider\SessionProvider</parameter>
+        <parameter key="fp_badaboom.chain_node.symfony_exception_handler.class">Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode</parameter>
     </parameters>
 
     <services>
@@ -41,6 +42,14 @@
             public="false"
         >
             <argument type="service" id="session" on-invalid="ignore" />
+        </service>
+
+        <service
+            id="fp_badaboom.chain_node.symfony_exception_handler"
+            class="%fp_badaboom.chain_node.symfony_exception_handler.class%"
+            public="false"
+        >
+            <argument>%kernel.debug%</argument>
         </service>
     </services>
 </container>
