@@ -5,27 +5,27 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="fp.badaboom.normalizer.data_holder.class">BadaBoom\Serializer\Normalizer\DataHolderNormalizer</parameter>
-        <parameter key="fp.badaboom.encoder.text.class">BadaBoom\Serializer\Encoder\TextEncoder</parameter>
-        <parameter key="fp.badaboom.serializer.class">Symfony\Component\Serializer\Serializer</parameter>
+        <parameter key="fp_badaboom.normalizer.data_holder.class">BadaBoom\Serializer\Normalizer\DataHolderNormalizer</parameter>
+        <parameter key="fp_badaboom.encoder.text.class">BadaBoom\Serializer\Encoder\TextEncoder</parameter>
+        <parameter key="fp_badaboom.serializer.class">Symfony\Component\Serializer\Serializer</parameter>
     </parameters>
 
     <services>
-        <service id="fp.badaboom.normalizer.data_holder" class="%fp.badaboom.normalizer.data_holder.class%">
-            <tag name="fp.badaboom.normalizer" />
+        <service id="fp_badaboom.normalizer.data_holder" class="%fp_badaboom.normalizer.data_holder.class%">
+            <tag name="fp_badaboom.normalizer" />
         </service>
 
-        <service id="fp.badaboom.encoder.text" class="%fp.badaboom.encoder.text.class%">
-            <tag name="fp.badaboom.encoder" />
+        <service id="fp_badaboom.encoder.text" class="%fp_badaboom.encoder.text.class%">
+            <tag name="fp_badaboom.encoder" />
         </service>
 
-        <service id="fp.badaboom.serializer" class="%fp.badaboom.serializer.class%">
+        <service id="fp_badaboom.serializer" class="%fp_badaboom.serializer.class%">
             <!--
-                        All services with tag "fp.badaboom.normalizer" are inserted here by SerializerPass
+                        All services with tag "fp_badaboom.normalizer" are inserted here by SerializerPass
                     -->
             <argument type="collection" />
             <!--
-                        All services with tag "fp.badaboom.encoder" are inserted here by SerializerPass
+                        All services with tag "fp_badaboom.encoder" are inserted here by SerializerPass
                     -->
             <argument type="collection" />
         </service>

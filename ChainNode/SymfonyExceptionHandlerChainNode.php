@@ -13,16 +13,16 @@ use BadaBoom\DataHolder\DataHolderInterface;
 class SymfonyExceptionHandlerChainNode extends AbstractChainNode
 {
     /**
-     * @var \Symfony\Component\HttpKernel\Debug\ExceptionHandler
+     * @var boolean
      */
-    protected $exceptionHandler;
+    protected $debug;
 
     /**
-     * @param \Symfony\Component\HttpKernel\Debug\ExceptionHandler $exceptionHandler
+     * @param boolean $debug
      */
-    public function __construct(ExceptionHandler $exceptionHandler)
+    public function __construct($debug)
     {
-        $this->exceptionHandler = $exceptionHandler;
+        $this->debug = $debug;
     }
 
     /**
@@ -30,7 +30,14 @@ class SymfonyExceptionHandlerChainNode extends AbstractChainNode
      */
     public function handle(\Exception $exception, DataHolderInterface $data)
     {
-        $this->exceptionHandler->handle($exception);
+        if ('cli' === PHP_SAPI) {
+            $this->handleNextNode($exception, $data);
+            
+            return;
+        }
+            
+        $symfonyExceptionHandler = new ExceptionHandler($this->debug);
+        $symfonyExceptionHandler->handle($exception);
 
         $this->handleNextNode($exception, $data);
     }

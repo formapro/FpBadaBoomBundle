@@ -5,42 +5,51 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="fp.badaboom.chain_node.provider.security_context.class">Fp\BadaBoomBundle\ChainNode\Provider\SecurityContextProvider</parameter>
-        <parameter key="fp.badaboom.chain_node.provider.request.class">Fp\BadaBoomBundle\ChainNode\Provider\RequestProvider</parameter>
-        <parameter key="fp.badaboom.chain_node.provider.session.class">Fp\BadaBoomBundle\ChainNode\Provider\SessionProvider</parameter>
+        <parameter key="fp_badaboom.chain_node.provider.security_context.class">Fp\BadaBoomBundle\ChainNode\Provider\SecurityContextProvider</parameter>
+        <parameter key="fp_badaboom.chain_node.provider.request.class">Fp\BadaBoomBundle\ChainNode\Provider\RequestProvider</parameter>
+        <parameter key="fp_badaboom.chain_node.provider.session.class">Fp\BadaBoomBundle\ChainNode\Provider\SessionProvider</parameter>
+        <parameter key="fp_badaboom.chain_node.symfony_exception_handler.class">Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode</parameter>
     </parameters>
 
     <services>
         <service
-            id="fp.badaboom.chain_node.provider.security_context"
-            class="%fp.badaboom.chain_node.provider.security_context.class%"
+            id="fp_badaboom.chain_node.provider.security_context"
+            class="%fp_badaboom.chain_node.provider.security_context.class%"
             public="false"
         >
             <argument type="service" id="security.context" on-invalid="ignore" />
         </service>
 
         <service
-            id="fp.badaboom.chain_node.provider.request"
-            class="%fp.badaboom.chain_node.provider.request.class%"
+            id="fp_badaboom.chain_node.provider.request"
+            class="%fp_badaboom.chain_node.provider.request.class%"
             public="false"
         >
             <tag name="kernel.event_subscribe" />
         </service>
 
         <service
-                id="fp.badaboom.chain_node.provider.request"
-                class="%fp.badaboom.chain_node.provider.request.class%"
+                id="fp_badaboom.chain_node.provider.request"
+                class="%fp_badaboom.chain_node.provider.request.class%"
                 public="false"
                 >
             <tag name="kernel.event_subscribe" />
         </service>
 
         <service
-            id="fp.badaboom.chain_node.provider.session"
-            class="%fp.badaboom.chain_node.provider.session.class%"
+            id="fp_badaboom.chain_node.provider.session"
+            class="%fp_badaboom.chain_node.provider.session.class%"
             public="false"
         >
             <argument type="service" id="session" on-invalid="ignore" />
+        </service>
+
+        <service
+            id="fp_badaboom.chain_node.symfony_exception_handler"
+            class="%fp_badaboom.chain_node.symfony_exception_handler.class%"
+            public="false"
+        >
+            <argument>%kernel.debug%</argument>
         </service>
     </services>
 </container>

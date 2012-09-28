@@ -13,10 +13,10 @@ class AddSerializerNormalizersPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $normalizers = array();
-        foreach ($container->findTaggedServiceIds('fp.badaboom.normalizer') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('fp_badaboom.normalizer') as $id => $attributes) {
             $normalizers[] = new Reference($id);
         }
 
-        $container->getDefinition('fp.badaboom.serializer')->replaceArgument(0, $normalizers);
+        $container->getDefinition('fp_badaboom.serializer')->replaceArgument(0, $normalizers);
     }
 }

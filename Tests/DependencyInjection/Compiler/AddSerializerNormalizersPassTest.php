@@ -25,7 +25,7 @@ class AddSerializerNormalizersPassTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('findTaggedServiceIds')
             ->with(
-                $this->equalTo('fp.badaboom.normalizer')
+                $this->equalTo('fp_badaboom.normalizer')
             )
             ->will($this->returnValue(array()))
         ;
