@@ -40,9 +40,5 @@
             
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" />
         </service>
-        
-        <service id="fp_badaboom.factory" class="Fp\BadaBoomBundle\BadaBoomFactory" public="false">
-                <argument>%kernel.bundles%</argument>
-        </service>
     </services>
 </container>
