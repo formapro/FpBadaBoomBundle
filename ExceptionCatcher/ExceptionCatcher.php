@@ -39,6 +39,7 @@ class ExceptionCatcher implements ExceptionCatcherInterface
      */
     public function start($debug = false)
     {
-        set_exception_handler(array($this, 'handleException'));
+        //Basic implementation does not set any handlers. 
+        //It uses symfony's exception event to handle exception.
     }
 }
