@@ -18,7 +18,10 @@
     "require": {
         "php": ">=5.3.2",
         "fp/badaboom": "1.0.x-dev",
-        "symfony/symfony": "2.1.x"
+        "symfony/symfony": ">=2.0,<2.2"
+    },
+    "suggest": {
+        "fp/universal-error-catcher": "As exceptions and recoverable\fatal errors catcher."  
     },
     "autoload": {
         "psr-0": { "Fp\\BadaBoomBundle": "" }

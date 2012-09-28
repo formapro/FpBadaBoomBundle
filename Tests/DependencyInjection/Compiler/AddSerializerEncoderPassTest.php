@@ -25,7 +25,7 @@ class AddSerializerEncoderPassTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('findTaggedServiceIds')
             ->with(
-                $this->equalTo('fp.badaboom.encoder')
+                $this->equalTo('fp_badaboom.encoder')
             )
             ->will($this->returnValue(array()))
         ;

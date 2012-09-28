@@ -20,7 +20,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetDataHolderNormalizer()
     {
-        $dataHolderNormalizerPlainText = self::$container->get('fp.badaboom.normalizer.data_holder');
+        $dataHolderNormalizerPlainText = self::$container->get('fp_badaboom.normalizer.data_holder');
 
         $this->assertInstanceOf(
             'BadaBoom\Serializer\Normalizer\DataHolderNormalizer',
@@ -33,7 +33,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetTextEncoder()
     {
-        $dataHolderNormalizerPlainText = self::$container->get('fp.badaboom.encoder.text');
+        $dataHolderNormalizerPlainText = self::$container->get('fp_badaboom.encoder.text');
 
         $this->assertInstanceOf(
             'BadaBoom\Serializer\Encoder\TextEncoder',
@@ -46,7 +46,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetSerializer()
     {
-        $serializer = self::$container->get('fp.badaboom.serializer');
+        $serializer = self::$container->get('fp_badaboom.serializer');
 
         $this->assertInstanceOf('Symfony\Component\Serializer\Serializer', $serializer);
     }
@@ -56,7 +56,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetSerializerWhichSupportsNormalizationOfDataHolder()
     {
-        $serializer = self::$container->get('fp.badaboom.serializer');
+        $serializer = self::$container->get('fp_badaboom.serializer');
 
         $this->assertTrue($serializer->supportsNormalization($this->createDataHolderMock()));
     }
@@ -66,7 +66,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetSerializerWhichSupportsEncodingToPlainTextFormat()
     {
-        $serializer = self::$container->get('fp.badaboom.serializer');
+        $serializer = self::$container->get('fp_badaboom.serializer');
 
         $this->assertTrue($serializer->supportsEncoding('plain-text'));
     }

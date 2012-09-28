@@ -13,10 +13,10 @@ class AddSerializerEncodersPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $encoders = array();
-        foreach ($container->findTaggedServiceIds('fp.badaboom.encoder') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('fp_badaboom.encoder') as $id => $attributes) {
             $encoders[] = new Reference($id);
         }
 
-        $container->getDefinition('fp.badaboom.serializer')->replaceArgument(1, $encoders);
+        $container->getDefinition('fp_badaboom.serializer')->replaceArgument(1, $encoders);
     }
 }
