@@ -2,7 +2,6 @@
 namespace Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher;
 
 use Symfony\Component\ClassLoader\DebugUniversalClassLoader;
-use Symfony\Component\HttpKernel\Debug\ExceptionHandler as SymfonyExceptionHandler;
 
 use Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcherInterface;
 use BadaBoom\ChainNode\ChainNodeInterface;

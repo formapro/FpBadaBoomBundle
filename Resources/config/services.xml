@@ -10,6 +10,7 @@
         <parameter key="fp_badaboom.serializer.class">Symfony\Component\Serializer\Serializer</parameter>
         <parameter key="fp_badaboom.exception_catcher.class">Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcher</parameter>
         <parameter key="fp_badaboom.exception_listener.class">Fp\BadaBoomBundle\EventListener\ExceptionListener</parameter>
+        <parameter key="fp_badaboom.chain_node_manager.class">Fp\BadaBoomBundle\ChainNode\ChainNodeManager</parameter>
     </parameters>
 
     <services>
@@ -28,7 +29,10 @@
             <argument type="collection" />
         </service>
         
-        <service id="fp_badaboom.exception_catcher" class="fp_badaboom.exception_catcher.class">
+        <service id="fp_badaboom.chain_node_manager" class="%fp_badaboom.chain_node_manager.class%">
+        </service>
+        
+        <service id="fp_badaboom.exception_catcher" class="%fp_badaboom.exception_catcher.class%">
         </service>
 
         <service id="fp_badaboom.exception_listener" class="%fp_badaboom.exception_listener.class%">
@@ -38,7 +42,7 @@
         </service>
         
         <service id="fp_badaboom.factory" class="Fp\BadaBoomBundle\BadaBoomFactory" public="false">
-            <argument>%kernel.bundles%</argument>
+                <argument>%kernel.bundles%</argument>
         </service>
     </services>
 </container>
