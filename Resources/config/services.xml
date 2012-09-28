@@ -8,6 +8,7 @@
         <parameter key="fp_badaboom.normalizer.data_holder.class">BadaBoom\Serializer\Normalizer\DataHolderNormalizer</parameter>
         <parameter key="fp_badaboom.encoder.text.class">BadaBoom\Serializer\Encoder\TextEncoder</parameter>
         <parameter key="fp_badaboom.serializer.class">Symfony\Component\Serializer\Serializer</parameter>
+        <parameter key="fp_badaboom.exception_catcher.class">Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcher</parameter>
     </parameters>
 
     <services>
@@ -20,15 +21,13 @@
         </service>
 
         <service id="fp_badaboom.serializer" class="%fp_badaboom.serializer.class%">
-            <!--
-                        All services with tag "fp_badaboom.normalizer" are inserted here by SerializerPass
-                    -->
+            <!-- All services with tag "fp_badaboom.normalizer" are inserted here by AddSerializerNormalizersPass -->
             <argument type="collection" />
-            <!--
-                        All services with tag "fp_badaboom.encoder" are inserted here by SerializerPass
-                    -->
+            <!-- All services with tag "fp_badaboom.encoder" are inserted here by AddSerializerEncodersPass -->
             <argument type="collection" />
         </service>
-
+        
+        <service id="fp_badaboom.exception_catcher" class="fp_badaboom.exception_catcher.class">
+        </service>
     </services>
 </container>
