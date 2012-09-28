@@ -6,5 +6,6 @@
 
     <parameters>
         <parameter key="fp_badaboom.chain_node.symfony_exception_handler.class">Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ChainNode\SymfonyExceptionHandlerChainNode</parameter>
+        <parameter key="fp_badaboom.exception_catcher.class">Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ExceptionCatcher</parameter>
     </parameters>
 </container>
