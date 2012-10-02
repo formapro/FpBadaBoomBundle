@@ -22,6 +22,12 @@ class FpBadaBoomBundle extends Bundle
      */
     protected $chainNodeManager;
     
+    public function __construct(ExceptionCatcherInterface $exceptionCatcher = null, ChainNodeManagerInterface $chainNodeManager = null)
+    {
+        $this->exceptionCatcher = $exceptionCatcher;
+        $this->chainNodeManager = $chainNodeManager;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -54,6 +60,7 @@ class FpBadaBoomBundle extends Bundle
 
         $container->addCompilerPass(new AddSerializerNormalizersPass);
         $container->addCompilerPass(new AddSerializerEncodersPass);
+        $container->addCompilerPass(new AddChainNodesToManagerPass)
     }
 
     /**
@@ -86,21 +93,5 @@ class FpBadaBoomBundle extends Bundle
         foreach ($chainNodeManager->all() as $chainNode) {
             $exceptionCatcher->registerChainNode($chainNode);
         }
-    }
-
-    /**
-     * @param \Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcherInterface $exceptionCatcher
-     */
-    public function setExceptionCatcher(ExceptionCatcherInterface $exceptionCatcher)
-    {
-        $this->exceptionCatcher = $exceptionCatcher;
-    }
-
-    /**
-     * @param \Fp\BadaBoomBundle\ChainNode\ChainNodeManagerInterface $chainNodeManager
-     */
-    public function setChainNodeManager(ChainNodeManagerInterface $chainNodeManager)
-    {
-        $this->chainNodeManager = $chainNodeManager;
     }
 }
