@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerNormalizersPass;
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerEncodersPass;
+use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddChainNodesToManagerPass;
 use Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcherInterface;
 use Fp\BadaBoomBundle\ChainNode\ChainNodeManagerInterface;
 
@@ -60,7 +61,7 @@ class FpBadaBoomBundle extends Bundle
 
         $container->addCompilerPass(new AddSerializerNormalizersPass);
         $container->addCompilerPass(new AddSerializerEncodersPass);
-        $container->addCompilerPass(new AddChainNodesToManagerPass)
+        $container->addCompilerPass(new AddChainNodesToManagerPass);
     }
 
     /**
