@@ -1,10 +1,8 @@
 <?php
 namespace Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ChainNode;
 
-use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
-
-use BadaBoom\DataHolder\DataHolderInterface;
 use Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode as BaseSymfonyExceptionHandlerChainNode;
+use BadaBoom\Context;
 
 /**
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
@@ -15,15 +13,16 @@ class SymfonyExceptionHandlerChainNode extends BaseSymfonyExceptionHandlerChainN
     /**
      * {@inheritdoc}
      */
-    public function handle(\Exception $exception, DataHolderInterface $data)
+    public function handle(Context $context)
     {
         //filter recoverable errors.
+        $exception = $context->getException();
         if ($exception instanceof \ErrorException && false == $exception instanceof \FatalErrorException) {
-            $this->handleNextNode($exception, $data);
+            $this->handleNextNode($context);
             
             return;
         }
             
-        parent::handle($exception, $data);
+        parent::handle($context);
     }
 }

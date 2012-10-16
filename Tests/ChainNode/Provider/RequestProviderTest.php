@@ -4,7 +4,7 @@ namespace Fp\BadaBoomBundle\Tests\ChainNode\Sender;
 use Symfony\Component\HttpFoundation\Request;
 
 use Fp\BadaBoomBundle\ChainNode\Provider\RequestProvider;
-use BadaBoom\DataHolder\DataHolder;
+use BadaBoom\Context;
 
 class RequestProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,15 +59,15 @@ class RequestProviderTest extends \PHPUnit_Framework_TestCase
 
     public function shouldDoNothingIfRequestNotSet()
     {
-        $dataHodlerMock = $this->createDataHolderMock();
-        $dataHodlerMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->never())
-            ->method('set')
+            ->method('setVar')
         ;
 
         $proviver = new RequestProvider;
 
-        $proviver->handle(new \Exception(), $dataHodlerMock);
+        $proviver->handle($contextMock);
     }
 
     /**
@@ -75,24 +75,20 @@ class RequestProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDelegateHandlingToNextNode()
     {
-        $expectedException = new \Exception();
-        $expectedDataHolderMock = $this->createDataHolderMock();
+        $context = new Context(new \Exception);
 
         $nextChainNodeMock = $this->createChainNodeMock();
         $nextChainNodeMock
             ->expects($this->once())
             ->method('handle')
-            ->with(
-            $this->equalTo($expectedException),
-            $this->equalTo($expectedDataHolderMock)
-        )
+            ->with($context)
         ;
 
         $proviver = new RequestProvider;
 
         $proviver->nextNode($nextChainNodeMock);
 
-        $proviver->handle($expectedException, $expectedDataHolderMock);
+        $proviver->handle($context);
     }
 
     /**
@@ -124,15 +120,15 @@ class RequestProviderTest extends \PHPUnit_Framework_TestCase
             $server = $expectedServerData
         );
 
-        $dataHolder = new DataHolder;
+        $context = new Context(new \Exception);
 
         $proviver = new RequestProvider;
         $proviver->setRequest($request);
 
-        $proviver->handle(new \Exception(), $dataHolder);
+        $proviver->handle($context);
                      ;
-        $this->assertTrue($dataHolder->has('server'));
-        $this->assertSame($expectedServerData, $dataHolder->get('server'));
+        $this->assertTrue($context->hasVar('server'));
+        $this->assertSame($expectedServerData, $context->getVar('server'));
     }
 
     /**
@@ -154,15 +150,15 @@ class RequestProviderTest extends \PHPUnit_Framework_TestCase
             $server = array()
         );
 
-        $dataHolder = new DataHolder;
+        $context = new Context(new \Exception);
 
         $proviver = new RequestProvider;
         $proviver->setRequest($request);
 
-        $proviver->handle(new \Exception(), $dataHolder);
+        $proviver->handle($context);
         ;
-        $this->assertTrue($dataHolder->has('cookies'));
-        $this->assertSame($expectedCookieData, $dataHolder->get('cookies'));
+        $this->assertTrue($context->hasVar('cookies'));
+        $this->assertSame($expectedCookieData, $context->getVar('cookies'));
     }
 
     /**
@@ -184,15 +180,15 @@ class RequestProviderTest extends \PHPUnit_Framework_TestCase
             $server = array()
         );
 
-        $dataHolder = new DataHolder;
+        $context = new Context(new \Exception);
 
         $proviver = new RequestProvider;
         $proviver->setRequest($request);
 
-        $proviver->handle(new \Exception(), $dataHolder);
+        $proviver->handle($context);
         ;
-        $this->assertTrue($dataHolder->has('query'));
-        $this->assertSame($expectedQueryData, $dataHolder->get('query'));
+        $this->assertTrue($context->hasVar('query'));
+        $this->assertSame($expectedQueryData, $context->getVar('query'));
     }
 
     /**
@@ -214,20 +210,23 @@ class RequestProviderTest extends \PHPUnit_Framework_TestCase
             $server = array()
         );
 
-        $dataHolder = new DataHolder;
+        $context = new Context(new \Exception);
 
         $proviver = new RequestProvider;
         $proviver->setRequest($request);
 
-        $proviver->handle(new \Exception(), $dataHolder);
+        $proviver->handle($context);
         ;
-        $this->assertTrue($dataHolder->has('request'));
-        $this->assertSame($expectedRequestData, $dataHolder->get('request'));
+        $this->assertTrue($context->hasVar('request'));
+        $this->assertSame($expectedRequestData, $context->getVar('request'));
     }
 
-    protected function createDataHolderMock()
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Badaboom\Context
+     */
+    protected function createContextMock()
     {
-        return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
+        return $this->getMock('BadaBoom\Context', array(), array(new \Exception));
     }
 
     protected function createGetResponseEvent()

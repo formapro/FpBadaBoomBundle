@@ -5,7 +5,7 @@ use Symfony\Component\ClassLoader\DebugUniversalClassLoader;
 
 use Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcherInterface;
 use BadaBoom\ChainNode\ChainNodeInterface;
-use BadaBoom\DataHolder\DataHolder;
+use BadaBoom\Context;
 
 /**
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
@@ -23,8 +23,8 @@ class ExceptionCatcher extends \UniversalErrorCatcher_Catcher implements Excepti
         
         $this->chainNodes[] = $chainNode;
         
-        $this->registerCallback(function(\Exception $e) use ($chainNode){
-            $chainNode->handle($e, new DataHolder());
+        $this->registerCallback(function(\Exception $e) use ($chainNode) {
+            $chainNode->handle(new Context($e));
         });
     }
     

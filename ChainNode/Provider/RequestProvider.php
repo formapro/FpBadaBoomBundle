@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use BadaBoom\ChainNode\AbstractChainNode;
-use BadaBoom\DataHolder\DataHolderInterface;
+use BadaBoom\Context;
 
 class RequestProvider extends AbstractChainNode implements EventSubscriberInterface
 {
@@ -17,17 +17,17 @@ class RequestProvider extends AbstractChainNode implements EventSubscriberInterf
      */
     protected $request;
 
-    public function handle(\Exception $exception, DataHolderInterface $data)
+    public function handle(Context $context)
     {
         if ($this->request) {
-            $data->set('server', $this->request->server->all());
-            $data->set('attributes', $this->request->attributes->all());
-            $data->set('cookies', $this->request->cookies->all());
-            $data->set('query', $this->request->query->all());
-            $data->set('request', $this->request->request->all());
+            $context->setVar('server', $this->request->server->all());
+            $context->setVar('attributes', $this->request->attributes->all());
+            $context->setVar('cookies', $this->request->cookies->all());
+            $context->setVar('query', $this->request->query->all());
+            $context->setVar('request', $this->request->request->all());
         }
 
-        $this->handleNextNode($exception, $data);
+        $this->handleNextNode($context);
     }
 
     public function onEarlyKernelRequest(GetResponseEvent $event)

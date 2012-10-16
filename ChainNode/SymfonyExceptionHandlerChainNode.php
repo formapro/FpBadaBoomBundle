@@ -4,7 +4,7 @@ namespace Fp\BadaBoomBundle\ChainNode;
 use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
 
 use BadaBoom\ChainNode\AbstractChainNode;
-use BadaBoom\DataHolder\DataHolderInterface;
+use BadaBoom\Context;
 
 /**
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
@@ -28,17 +28,17 @@ class SymfonyExceptionHandlerChainNode extends AbstractChainNode
     /**
      * {@inheritdoc}
      */
-    public function handle(\Exception $exception, DataHolderInterface $data)
+    public function handle(Context $context)
     {
         if ('cli' === PHP_SAPI) {
-            $this->handleNextNode($exception, $data);
+            $this->handleNextNode($context);
             
             return;
         }
             
         $symfonyExceptionHandler = new ExceptionHandler($this->debug);
-        $symfonyExceptionHandler->handle($exception);
+        $symfonyExceptionHandler->handle($context->getException());
 
-        $this->handleNextNode($exception, $data);
+        $this->handleNextNode($context);
     }
 }

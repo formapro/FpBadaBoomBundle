@@ -44,10 +44,10 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($expectedSessionData))
         ;
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->once())
-            ->method('set')
+            ->method('setVar')
             ->with(
                 $this->equalTo('session'),
                 $this->equalTo($expectedSessionData)
@@ -56,7 +56,7 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
 
         $sessionProvider = new SessionProvider($sessionMock);
 
-        $sessionProvider->handle(new \Exception(), $dataHolderMock);
+        $sessionProvider->handle($contextMock);
     }
 
     /**
@@ -66,10 +66,10 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCustomSectionName = 'custom_section_name';
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->once())
-            ->method('set')
+            ->method('setVar')
             ->with(
                 $this->equalTo($expectedCustomSectionName)
             )
@@ -80,7 +80,7 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
             $expectedCustomSectionName
         );
 
-        $sessionProvider->handle(new \Exception(), $dataHolderMock);
+        $sessionProvider->handle($contextMock);
     }
 
     /**
@@ -88,24 +88,20 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDelegateHandlingToNextNode()
     {
-        $expectedException = new \Exception();
-        $expectedDataHolder = $this->createDataHolderMock();
+        $context = $this->createContextMock();
 
         $nextChainNodeMock = $this->createChainNodeMock();
         $nextChainNodeMock
             ->expects($this->once())
             ->method('handle')
-            ->with(
-                $this->equalTo($expectedException),
-                $this->equalTo($expectedDataHolder)
-            )
+            ->with($context)
         ;
 
         $sessionProvider = new SessionProvider($this->createSessionMock());
 
         $sessionProvider->nextNode($nextChainNodeMock);
 
-        $sessionProvider->handle($expectedException, $expectedDataHolder);
+        $sessionProvider->handle($context);
     }
 
     /**
@@ -117,11 +113,11 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\BadaBoom\DataHolder\DataHolderInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Badaboom\Context
      */
-    protected function createDataHolderMock()
+    protected function createContextMock()
     {
-        return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
+        return $this->getMock('BadaBoom\Context', array(), array(new \Exception));
     }
 
     /**

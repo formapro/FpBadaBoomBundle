@@ -2,6 +2,7 @@
 namespace Fp\BadaBoomBundle\Tests\ChainNode\Provider;
 
 use Fp\BadaBoomBundle\ChainNode\Provider\SecurityContextProvider;
+use BadaBoom\Context;
 
 class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,13 +30,13 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
     {
         $chain = new SecurityContextProvider($this->createSecurityContextMock());
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->never())
-            ->method('set')
+            ->method('setVar')
         ;
 
-        $chain->handle(new \Exception(), $dataHolderMock);
+        $chain->handle($contextMock);
     }
 
     /**
@@ -43,8 +44,7 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDelegateHandlingToNextChainNode()
     {
-        $expectedException = new \Exception();
-        $expectedDataHolder = $this->createDataHolderMock();
+        $context = new Context(new \Exception);
 
         $chain = new SecurityContextProvider($this->createSecurityContextMock());
 
@@ -52,15 +52,12 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
         $nextChainNodeMock
             ->expects($this->once())
             ->method('handle')
-            ->with(
-                $this->equalTo($expectedException),
-                $this->equalTo($expectedDataHolder)
-            )
+            ->with($context)
         ;
 
         $chain->nextNode($nextChainNodeMock);
 
-        $chain->handle($expectedException, $expectedDataHolder);
+        $chain->handle($context);
     }
 
     /**
@@ -88,10 +85,10 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($tokenMock))
         ;
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->once())
-            ->method('set')
+            ->method('setVar')
             ->with(
                 $this->equalTo($expectedDefaultSection),
                 $this->equalTo($expectedUserData)
@@ -100,7 +97,7 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
 
         $chain = new SecurityContextProvider($securityContextMock);
 
-        $chain->handle(new \Exception(), $dataHolderMock);
+        $chain->handle($contextMock);
     }
 
     /**
@@ -125,10 +122,10 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($tokenMock))
         ;
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->once())
-            ->method('set')
+            ->method('setVar')
             ->with(
                 $this->equalTo($expectedCustomSection)
             )
@@ -136,7 +133,7 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
 
         $chain = new SecurityContextProvider($securityContextMock, $expectedCustomSection);
 
-        $chain->handle(new \Exception(), $dataHolderMock);
+        $chain->handle($contextMock);
     }
 
     /**
@@ -172,10 +169,10 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($tokenMock))
         ;
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->once())
-            ->method('set')
+            ->method('setVar')
             ->with(
                 $this->equalTo($expectedDefaultSection),
                 $this->equalTo($expectedUserData)
@@ -184,7 +181,7 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
 
         $chain = new SecurityContextProvider($securityContextMock);
 
-        $chain->handle(new \Exception(), $dataHolderMock);
+        $chain->handle($contextMock);
     }
 
     /**
@@ -209,10 +206,10 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($tokenMock))
         ;
 
-        $dataHolderMock = $this->createDataHolderMock();
-        $dataHolderMock
+        $contextMock = $this->createContextMock();
+        $contextMock
             ->expects($this->once())
-            ->method('set')
+            ->method('setVar')
             ->with(
                 $this->equalTo($expectedCustomSection)
             )
@@ -220,7 +217,7 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
 
         $chain = new SecurityContextProvider($securityContextMock, $expectedCustomSection);
 
-        $chain->handle(new \Exception(), $dataHolderMock);
+        $chain->handle($contextMock);
     }
 
     protected function createSecurityContextMock()
@@ -243,8 +240,8 @@ class SecurityContextProviderTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
     }
 
-    protected function createDataHolderMock()
+    protected function createContextMock()
     {
-        return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
+        return $this->getMock('BadaBoom\Context', array(), array(new \Exception));
     }
 }

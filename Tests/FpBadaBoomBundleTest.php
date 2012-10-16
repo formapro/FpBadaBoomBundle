@@ -51,6 +51,25 @@ class FpBadaBoomBundleTest extends \PHPUnit_Framework_TestCase
         $bundle->build($containerBuilderMock);
     }
 
+    /**
+     * @test
+     */
+    public function shouldAddAddChainNodesToManagerPassWhileBuilding()
+    {
+        $bundle = new FpBadaBoomBundle;
+
+        $containerBuilderMock = $this->createContainerBuilderMock();
+        $containerBuilderMock
+            ->expects($this->at(2))
+            ->method('addCompilerPass')
+            ->with(
+                $this->isInstanceOf('Fp\BadaBoomBundle\DependencyInjection\Compiler\AddChainNodesToManagerPass')
+            )
+        ;
+
+        $bundle->build($containerBuilderMock);
+    }
+
     protected function createContainerBuilderMock()
     {
         return $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array(), array(), '', false);

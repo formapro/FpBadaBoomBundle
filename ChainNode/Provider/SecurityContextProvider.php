@@ -5,8 +5,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use BadaBoom\ChainNode\Provider\AbstractProvider;
-use BadaBoom\DataHolder\DataHolderInterface;
-
+use BadaBoom\Context;
 
 class SecurityContextProvider extends AbstractProvider
 {
@@ -21,21 +20,21 @@ class SecurityContextProvider extends AbstractProvider
         $this->sectionName = $sectionName;
     }
 
-    public function handle(\Exception $exception, DataHolderInterface $data)
+    public function handle(Context $context)
     {
         if ($this->securityContext && $token = $this->securityContext->getToken()) {
             $user = $token->getUser();
             if (is_string($user)) {
-                $data->set($this->sectionName, array(
+                $context->setVar($this->sectionName, array(
                     'user' => $user
                 ));
             } else if ($user instanceof UserInterface) {
-                $data->set($this->sectionName, array(
+                $context->setVar($this->sectionName, array(
                     'user' => $user->getUsername()
                 ));
             }
         }
 
-        $this->handleNextNode($exception, $data);
+        $this->handleNextNode($context);
     }
 }

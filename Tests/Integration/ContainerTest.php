@@ -18,14 +18,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldGetDataHolderNormalizer()
+    public function shouldGetContextNormalizer()
     {
-        $dataHolderNormalizerPlainText = self::$container->get('fp_badaboom.normalizer.data_holder');
+        $contextNormalizer = self::$container->get('fp_badaboom.normalizer.context');
 
-        $this->assertInstanceOf(
-            'BadaBoom\Serializer\Normalizer\DataHolderNormalizer',
-            $dataHolderNormalizerPlainText
-        );
+        $this->assertInstanceOf('BadaBoom\Serializer\Normalizer\ContextNormalizer', $contextNormalizer);
     }
 
     /**
@@ -33,12 +30,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetTextEncoder()
     {
-        $dataHolderNormalizerPlainText = self::$container->get('fp_badaboom.encoder.text');
+        $textEncoder = self::$container->get('fp_badaboom.encoder.text');
 
-        $this->assertInstanceOf(
-            'BadaBoom\Serializer\Encoder\TextEncoder',
-            $dataHolderNormalizerPlainText
-        );
+        $this->assertInstanceOf('BadaBoom\Serializer\Encoder\TextEncoder', $textEncoder);
     }
 
     /**
@@ -54,11 +48,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldGetSerializerWhichSupportsNormalizationOfDataHolder()
+    public function shouldGetSerializerWhichSupportsNormalizationOfContext()
     {
         $serializer = self::$container->get('fp_badaboom.serializer');
 
-        $this->assertTrue($serializer->supportsNormalization($this->createDataHolderMock()));
+        $this->assertTrue($serializer->supportsNormalization($this->createContextMock()));
     }
 
     /**
@@ -71,8 +65,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($serializer->supportsEncoding('plain-text'));
     }
 
-    protected function createDataHolderMock()
+    protected function createContextMock()
     {
-        return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
+        return $this->getMock('BadaBoom\Context', array(), array(new \Exception));
     }
 }

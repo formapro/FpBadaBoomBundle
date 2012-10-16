@@ -1,6 +1,5 @@
 framework:
     secret:                                               sdkfj
-    charset:                                              UTF-8
     test:                                                 true
     router:                                               { resource: "%kernel.root_dir%/config/routing.yml" }
     templating:

@@ -2,7 +2,7 @@
 namespace Fp\BadaBoomBundle\ExceptionCatcher;
 
 use BadaBoom\ChainNode\ChainNodeInterface;
-use BadaBoom\DataHolder\DataHolder;
+use BadaBoom\Context;
 
 /**
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
@@ -30,7 +30,7 @@ class ExceptionCatcher implements ExceptionCatcherInterface
     public function handleException(\Exception $e)
     {
         foreach ($this->chainNodes as $chainNode) {
-            $chainNode->handle($e, new DataHolder());
+            $chainNode->handle(new Context($e));
         }
     }
 

@@ -4,7 +4,7 @@ namespace Fp\BadaBoomBundle\ChainNode\Provider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use BadaBoom\ChainNode\Provider\AbstractProvider;
-use BadaBoom\DataHolder\DataHolderInterface;
+use BadaBoom\Context;
 
 /**
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
@@ -33,15 +33,14 @@ class SessionProvider extends AbstractProvider
     }
 
     /**
-     * @param \Exception $exception
-     * @param \BadaBoom\DataHolder\DataHolderInterface $data
+     * {@inheritdoc}
      */
-    public function handle(\Exception $exception, DataHolderInterface $data)
+    public function handle(Context $context)
     {
         if ($this->session) {
-            $data->set($this->sectionName, $this->session->all());
+            $context->setVar($this->sectionName, $this->session->all());
         }
 
-        $this->handleNextNode($exception, $data);
+        $this->handleNextNode($context);
     }
 }

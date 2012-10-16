@@ -2,6 +2,7 @@
 namespace Fp\BadaBoomBundle\Tests\ChainNode\Sender;
 
 use Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode;
+use BadaBoom\Context;
 
 /**
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
@@ -31,24 +32,20 @@ class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDelegateHandlingToNextNode()
     {
-        $expectedException = new \Exception();
-        $expectedDataHolderMock = $this->createDataHolderMock();
+        $context = new Context(new \Exception());
 
         $nextChainNodeMock = $this->createChainNodeMock();
         $nextChainNodeMock
             ->expects($this->once())
             ->method('handle')
-            ->with(
-                $this->equalTo($expectedException),
-                $this->equalTo($expectedDataHolderMock)
-            )
+            ->with($context)
         ;
 
         $sender = new SymfonyExceptionHandlerChainNode($this->createExceptionHandlerMock());
 
         $sender->nextNode($nextChainNodeMock);
 
-        $sender->handle($expectedException, $expectedDataHolderMock);
+        $sender->handle($context);
     }
 
     /**
@@ -56,7 +53,7 @@ class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldProxyExceptionToExceptionHandler()
     {
-        $expectedException = new \Exception();
+        $context = new Context($expectedException = new \Exception());
 
         $exceptionHandlerMock = $this->createExceptionHandlerMock();
         $exceptionHandlerMock
@@ -69,15 +66,7 @@ class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
 
         $sender = new SymfonyExceptionHandlerChainNode($exceptionHandlerMock);
 
-        $sender->handle($expectedException, $this->createDataHolderMock());
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\BadaBoom\DataHolder\DataHolderInterface
-     */
-    protected function createDataHolderMock()
-    {
-        return $this->getMock('BadaBoom\DataHolder\DataHolderInterface');
+        $sender->handle($context);
     }
 
     /**
