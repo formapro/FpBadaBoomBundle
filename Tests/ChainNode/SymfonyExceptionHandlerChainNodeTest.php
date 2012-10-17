@@ -10,12 +10,36 @@ use BadaBoom\Context;
  */
 class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
 {
+    protected $fumocker;
+    
+    public function setUp()
+    {
+        $this->fumocker = new \Fumocker\Fumocker();
+
+        $mock = $this->fumocker->getMock('Fp\BadaBoomBundle\ChainNode', 'php_sapi_name');
+        $mock
+            ->expects($this->any())
+            ->method('php_sapi_name')
+            ->will($this->returnValue('not-a-cli'))
+        ;
+        
+        ob_start();
+    }
+    
+    public function tearDown()
+    {
+        $this->fumocker->cleanup();
+        
+        ob_clean();
+    }
+    
     /**
      * @test
      */
     public function shouldBeSubClassOfAbstractSender()
     {
         $rc = new \ReflectionClass('Fp\BadaBoomBundle\ChainNode\SymfonyExceptionHandlerChainNode');
+        
         $this->assertTrue($rc->isSubclassOf('BadaBoom\ChainNode\AbstractChainNode'));
     }
 
@@ -24,7 +48,7 @@ class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
      */
     public function couldBeConstructedWithExceptionHandlerAsArgument()
     {
-        new SymfonyExceptionHandlerChainNode($this->createExceptionHandlerMock());
+        new SymfonyExceptionHandlerChainNode($debug = true);
     }
 
     /**
@@ -41,30 +65,9 @@ class SymfonyExceptionHandlerChainNodeTest extends \PHPUnit_Framework_TestCase
             ->with($context)
         ;
 
-        $sender = new SymfonyExceptionHandlerChainNode($this->createExceptionHandlerMock());
+        $sender = new SymfonyExceptionHandlerChainNode($debug = true);
 
         $sender->nextNode($nextChainNodeMock);
-
-        $sender->handle($context);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldProxyExceptionToExceptionHandler()
-    {
-        $context = new Context($expectedException = new \Exception());
-
-        $exceptionHandlerMock = $this->createExceptionHandlerMock();
-        $exceptionHandlerMock
-            ->expects($this->once())
-            ->method('handle')
-            ->with(
-                $this->equalTo($expectedException)
-            )
-        ;
-
-        $sender = new SymfonyExceptionHandlerChainNode($exceptionHandlerMock);
 
         $sender->handle($context);
     }

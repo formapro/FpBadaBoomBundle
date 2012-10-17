@@ -1,7 +1,12 @@
 <?php
 namespace Fp\BadaBoomBundle\Tests;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use Fp\BadaBoomBundle\FpBadaBoomBundle;
+use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerNormalizersPass;
+use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerEncodersPass;
+use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddChainNodesToManagerPass;
 
 class FpBadaBoomBundleTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,16 +25,11 @@ class FpBadaBoomBundleTest extends \PHPUnit_Framework_TestCase
     {
         $bundle = new FpBadaBoomBundle;
 
-        $containerBuilderMock = $this->createContainerBuilderMock();
-        $containerBuilderMock
-            ->expects($this->at(0))
-            ->method('addCompilerPass')
-            ->with(
-                $this->isInstanceOf('Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerNormalizersPass')
-            )
-        ;
+        $container = new ContainerBuilder();
 
-        $bundle->build($containerBuilderMock);
+        $bundle->build($container);
+
+        $this->assertContainerContainsCompilerPass($container, new AddSerializerNormalizersPass);
     }
 
     /**
@@ -39,16 +39,11 @@ class FpBadaBoomBundleTest extends \PHPUnit_Framework_TestCase
     {
         $bundle = new FpBadaBoomBundle;
 
-        $containerBuilderMock = $this->createContainerBuilderMock();
-        $containerBuilderMock
-            ->expects($this->at(1))
-            ->method('addCompilerPass')
-            ->with(
-                $this->isInstanceOf('Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerEncodersPass')
-            )
-        ;
+        $container = new ContainerBuilder();
 
-        $bundle->build($containerBuilderMock);
+        $bundle->build($container);
+
+        $this->assertContainerContainsCompilerPass($container, new AddSerializerEncodersPass);
     }
 
     /**
@@ -58,20 +53,21 @@ class FpBadaBoomBundleTest extends \PHPUnit_Framework_TestCase
     {
         $bundle = new FpBadaBoomBundle;
 
-        $containerBuilderMock = $this->createContainerBuilderMock();
-        $containerBuilderMock
-            ->expects($this->at(2))
-            ->method('addCompilerPass')
-            ->with(
-                $this->isInstanceOf('Fp\BadaBoomBundle\DependencyInjection\Compiler\AddChainNodesToManagerPass')
-            )
-        ;
+        $container = new ContainerBuilder();
 
-        $bundle->build($containerBuilderMock);
+        $bundle->build($container);
+
+        $this->assertContainerContainsCompilerPass($container, new AddChainNodesToManagerPass);
     }
-
-    protected function createContainerBuilderMock()
+    
+    protected function assertContainerContainsCompilerPass($container, $pass)
     {
-        return $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array(), array(), '', false);
+        $this->assertContains(
+            $pass,
+            $container->getCompilerPassConfig()->getPasses(),
+            $message = '',
+            $ignoreCase = false,
+            $checkForObjectIdentity = false
+        );
     }
 }

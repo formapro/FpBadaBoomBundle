@@ -58,11 +58,21 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldGetSerializerWhichSupportsEncodingToPlainTextFormat()
+    public function shouldGetSerializerWhichSupportsEncodingToTextFormat()
     {
         $serializer = self::$container->get('fp_badaboom.serializer');
 
-        $this->assertTrue($serializer->supportsEncoding('plain-text'));
+        $this->assertTrue($serializer->supportsEncoding('text'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetSerializerWhichSupportsEncodingToLineFormat()
+    {
+        $serializer = self::$container->get('fp_badaboom.serializer');
+
+        $this->assertTrue($serializer->supportsEncoding('line'));
     }
 
     protected function createContextMock()

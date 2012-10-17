@@ -20,6 +20,10 @@
         "fp/badaboom": "dev-not-approved",
         "symfony/symfony": ">=2.0,<2.2"
     },
+    "require-dev": {
+        "fp/fumocker": "1.0.*",
+        "phpunit/phpunit": "3.7.*"
+    },
     "suggest": {
         "fp/universal-error-catcher": "As exceptions and recoverable\fatal errors catcher."  
     },
@@ -27,6 +31,9 @@
         "psr-0": { "Fp\\BadaBoomBundle": "" }
     },
     "target-dir": "Fp/BadaBoomBundle",
+    "config": {
+        "bin-dir": "bin"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"

@@ -30,7 +30,8 @@ class SymfonyExceptionHandlerChainNode extends AbstractChainNode
      */
     public function handle(Context $context)
     {
-        if ('cli' === PHP_SAPI) {
+        var_dump(php_sapi_name());
+        if ('cli' === php_sapi_name()) {
             $this->handleNextNode($context);
             
             return;
