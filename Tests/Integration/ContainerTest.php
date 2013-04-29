@@ -78,9 +78,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldGetPsrLogger()
+    public function shouldGetLogger()
     {
-        $logger = self::$container->get('fp_badaboom.psr_logger');
+        $logger = self::$container->get('logger.exception');
 
         $this->assertInstanceOf('Psr\Log\LoggerInterface', $logger);
     }
