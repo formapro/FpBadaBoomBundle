@@ -47,7 +47,10 @@
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" />
         </service>
 
-        <service id="fp_badaboom.psr_logger" class="%fp_badaboom.logger.class%">
+        <service id="fp_badaboom.logger" class="%fp_badaboom.logger.class%">
+        </service>
+
+        <service id="logger.exception" alias="fp_badaboom.logger">
         </service>
     </services>
 </container>
