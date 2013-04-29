@@ -75,6 +75,16 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($serializer->supportsEncoding('line'));
     }
 
+    /**
+     * @test
+     */
+    public function shouldGetLogger()
+    {
+        $logger = self::$container->get('logger.exception');
+
+        $this->assertInstanceOf('Psr\Log\LoggerInterface', $logger);
+    }
+
     protected function createContextMock()
     {
         return $this->getMock('BadaBoom\Context', array(), array(new \Exception));
