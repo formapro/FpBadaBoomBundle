@@ -12,6 +12,7 @@
         <parameter key="fp_badaboom.exception_catcher.class">Fp\BadaBoomBundle\ExceptionCatcher\ExceptionCatcher</parameter>
         <parameter key="fp_badaboom.exception_listener.class">Fp\BadaBoomBundle\EventListener\ExceptionListener</parameter>
         <parameter key="fp_badaboom.chain_node_manager.class">Fp\BadaBoomBundle\ChainNode\ChainNodeManager</parameter>
+        <parameter key="fp_badaboom.psr_logger.class">BadaBoom\Bridge\Psr\Logger</parameter>
     </parameters>
 
     <services>
@@ -44,6 +45,9 @@
             <argument type="service" id="fp_badaboom.exception_catcher" />
             
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" />
+        </service>
+
+        <service id="fp_badaboom.psr_logger" class="%fp_badaboom.psr_logger.class%">
         </service>
     </services>
 </container>
