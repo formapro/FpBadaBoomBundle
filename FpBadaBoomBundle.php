@@ -1,6 +1,8 @@
 <?php
 namespace Fp\BadaBoomBundle;
 
+use BadaBoom\Bridge\Psr\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -90,9 +92,13 @@ class FpBadaBoomBundle extends Bundle
         $chainNodeManager = $this->container->get('fp_badaboom.chain_node_manager');
 
         $exceptionCatcher->start($this->container->getParameter('kernel.debug'));
+
+        /** @var $logger Logger */
+        $logger = $this->container->get('fp_badaboom.logger');
         
         foreach ($chainNodeManager->all() as $chainNode) {
             $exceptionCatcher->registerChainNode($chainNode);
+            $logger->registerChain($chainNode);
         }
     }
 }
