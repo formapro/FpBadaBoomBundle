@@ -1,11 +1,11 @@
 <?php
 namespace Fp\BadaBoomBundle;
 
-use BadaBoom\Bridge\Psr\Logger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+
+use BadaBoom\Bridge\Psr\Logger;
 
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerNormalizersPass;
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerEncodersPass;
