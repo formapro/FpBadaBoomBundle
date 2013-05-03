@@ -2,11 +2,12 @@
 
 namespace Fp\BadaBoomBundle\Controller;
 
+use Fp\BadaBoomBundle\JsLogger\JavascriptException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Fp\BadaBoomBundle\JsLogger\Logger;
+use BadaBoom\Bridge\Psr\Logger;
 
 class LogController extends Controller
 {
@@ -16,13 +17,11 @@ class LogController extends Controller
         $message = $request->query->get('msg');
         $context = $request->query->get('context', array());
 
-        $logger = $this->getLogger();
+        $exception = new JavascriptException($message, $context['file'], $context['line']);
 
-        if ($logger->write($level, $message, $context)) {
-            return new Response(base64_decode('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs'), 201, array('Content-Type' => 'image/gif'));
-        }
+        $this->getLogger()->log($level, $exception, $context);
 
-        return new Response('', 400);
+        return new Response(base64_decode('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs'), 201, array('Content-Type' => 'image/gif'));
     }
 
     /**
@@ -30,6 +29,6 @@ class LogController extends Controller
      */
     protected function getLogger()
     {
-        return $this->get('fp_badaboom_js_logger.logger');
+        return $this->get('fp_badaboom.logger');
     }
 }

@@ -49,6 +49,6 @@ JS;
 
     public function getName()
     {
-        return 'nelmio_js_logger';
+        return 'fb_badaboom_js_logger';
     }
 }
