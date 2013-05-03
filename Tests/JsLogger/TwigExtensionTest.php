@@ -8,6 +8,14 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function couldBeConstructedWithRouter()
+    {
+        new TwigExtension($this->createRouterMock());
+    }
+
+    /**
+     * @test
+     */
     public function shouldDetermineAllRequiredTwigFunction()
     {
         $twigExtension = new TwigExtension($this->createRouterMock());
