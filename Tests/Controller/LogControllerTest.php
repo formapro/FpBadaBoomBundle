@@ -49,6 +49,23 @@ class LogControllerTest extends WebTestCase
             $sender->message
         );
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnBadRequestPage()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/fp-badaboom/log', array(
+            'msg' => 'Test message',
+            'level' => 'error',
+        ));
+
+        $this->assertEquals(
+            400,
+            $client->getResponse()->getStatusCode()
+        );
+    }
 }
 
 class TestSender extends AbstractChainNode

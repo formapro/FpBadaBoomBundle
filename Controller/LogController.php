@@ -18,6 +18,10 @@ class LogController extends Controller
         $message = $request->query->get('msg');
         $context = $request->query->get('context', array());
 
+        if (false == isset($context['file'], $context['line'])) {
+            return new Response('', 400);
+        }
+
         $exception = new JavascriptException($message, $context['file'], $context['line']);
 
         $this->getLogger()->log($level, $exception, $context);
