@@ -2,12 +2,13 @@
 
 namespace Fp\BadaBoomBundle\Controller;
 
-use Fp\BadaBoomBundle\JsLogger\JavascriptException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use BadaBoom\Bridge\Psr\Logger;
+
+use Fp\BadaBoomBundle\JsLogger\JavascriptException;
 
 class LogController extends Controller
 {
