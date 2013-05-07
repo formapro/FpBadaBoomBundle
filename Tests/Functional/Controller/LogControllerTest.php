@@ -44,10 +44,13 @@ class LogControllerTest extends WebTestCase
             )
         );
 
-        $this->assertStringStartsWith(
-            "exception 'Fp\BadaBoomBundle\Exception\JavascriptException' with message 'Test message' in fileName:10",
-            $sender->message
-        );
+        $exception = $sender->context->getException();
+
+        $this->assertInstanceOf('Fp\BadaBoomBundle\Exception\JavascriptException', $exception);
+
+        $this->assertEquals('Test message', $exception->getMessage());
+        $this->assertEquals('fileName', $exception->getFile());
+        $this->assertEquals(10, $exception->getLine());
     }
 
     /**
@@ -70,7 +73,10 @@ class LogControllerTest extends WebTestCase
 
 class TestSender extends AbstractChainNode
 {
-    public $message;
+    /**
+     * @var Context
+     */
+    public $context;
     /**
      * @param Context $context
      *
@@ -78,7 +84,7 @@ class TestSender extends AbstractChainNode
      */
     function handle(Context $context)
     {
-        $this->message = (string) $context->getException();
+        $this->context = $context;
     }
 
 }
