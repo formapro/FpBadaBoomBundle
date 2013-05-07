@@ -24,7 +24,7 @@ class LogControllerTest extends WebTestCase
         $logger = $client->getContainer()->get('fp_badaboom.logger');
         $logger->registerChain($chainNodeManager->get('test'));
 
-        $crawler = $client->request('GET', '/fp-badaboom/log', array(
+        $crawler = $client->request('GET', '/fp-badaboom/js-log', array(
             'msg' => 'Test message',
             'level' => 'error',
             'context' => array(
@@ -56,7 +56,7 @@ class LogControllerTest extends WebTestCase
     public function shouldReturnBadRequestPage()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/fp-badaboom/log', array(
+        $crawler = $client->request('GET', '/fp-badaboom/js-log', array(
             'msg' => 'Test message',
             'level' => 'error',
         ));
