@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use BadaBoom\Bridge\Psr\Logger;
 
-use Fp\BadaBoomBundle\JsLogger\JavascriptException;
+use Fp\BadaBoomBundle\Exception\JavascriptException;
 
 class LogController extends Controller
 {

@@ -16,6 +16,6 @@
         </whitelist>
     </filter>
     <php>
-        <server name="KERNEL_DIR" value="./Tests/Integration/app/" />
+        <server name="KERNEL_DIR" value="./Tests/Functional/app/" />
     </php>
 </phpunit>

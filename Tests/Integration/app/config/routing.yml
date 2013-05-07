@@ -1,3 +1,0 @@
-rj_core_homepage:
-    pattern:   /fp-badaboom/log
-    defaults:  { _controller: FpBadaBoomBundle:Log:create }

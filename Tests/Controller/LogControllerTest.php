@@ -1,5 +1,5 @@
 <?php
-namespace Fp\BadaBoomBundle\Tests\Controller;
+namespace Fp\BadaBoomBundle\Tests\Functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -7,7 +7,6 @@ use BadaBoom\ChainNode\AbstractChainNode;
 use BadaBoom\Context;
 
 use Fp\BadaBoomBundle\ChainNode\ChainNodeManager;
-use Fp\BadaBoomBundle\ChainNode\ChainNodeManagerInterface;
 
 class LogControllerTest extends WebTestCase
 {
@@ -18,9 +17,9 @@ class LogControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var $chainNodeManager ChainNodeManagerInterface */
         $chainNodeManager = new ChainNodeManager();
-        $chainNodeManager->addSender('test', new TestSender);
+        $sender = new TestSender;
+        $chainNodeManager->addSender('test', $sender);
 
         $logger = $client->getContainer()->get('fp_badaboom.logger');
         $logger->registerChain($chainNodeManager->get('test'));
@@ -46,14 +45,15 @@ class LogControllerTest extends WebTestCase
         );
 
         $this->assertStringStartsWith(
-            "exception 'Fp\BadaBoomBundle\JsLogger\JavascriptException' with message 'Test message' in fileName:10",
-            file_get_contents(sys_get_temp_dir().'/temp.txt')
+            "exception 'Fp\BadaBoomBundle\Exception\JavascriptException' with message 'Test message' in fileName:10",
+            $sender->message
         );
     }
 }
 
 class TestSender extends AbstractChainNode
 {
+    public $message;
     /**
      * @param Context $context
      *
@@ -61,7 +61,7 @@ class TestSender extends AbstractChainNode
      */
     function handle(Context $context)
     {
-        file_put_contents(sys_get_temp_dir().'/temp.txt', $context->getException());
+        $this->message = (string) $context->getException();
     }
 
 }

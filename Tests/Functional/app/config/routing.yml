@@ -1,0 +1,3 @@
+FpBadaBoomBundle:
+    resource: "@FpBadaBoomBundle/Resources/config/routing.xml"
+    prefix:   /fp-badaboom

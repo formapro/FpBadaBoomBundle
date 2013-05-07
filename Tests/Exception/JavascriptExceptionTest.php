@@ -1,7 +1,7 @@
 <?php
-namespace Fp\BadaBoomBundle\Tests\JsLogger;
+namespace Fp\BadaBoomBundle\Tests\Exception;
 
-use Fp\BadaBoomBundle\JsLogger\JavascriptException;
+use Fp\BadaBoomBundle\Exception\JavascriptException;
 
 class JavascriptExceptionTest extends \PHPUnit_Framework_TestCase
 {

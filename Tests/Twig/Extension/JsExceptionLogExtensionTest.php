@@ -1,16 +1,16 @@
 <?php
 namespace Fp\BadaBoomBundle\Tests\JsLogger;
 
-use Fp\BadaBoomBundle\JsLogger\TwigExtension;
+use Fp\BadaBoomBundle\Twig\Extension\JsExceptionLogExtension;
 
-class TwigExtensionTest extends \PHPUnit_Framework_TestCase
+class JsExceptionLogExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function couldBeConstructedWithRouter()
     {
-        new TwigExtension($this->createRouterMock());
+        new JsExceptionLogExtension($this->createRouterMock());
     }
 
     /**
@@ -18,7 +18,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDetermineAllRequiredTwigFunction()
     {
-        $twigExtension = new TwigExtension($this->createRouterMock());
+        $twigExtension = new JsExceptionLogExtension($this->createRouterMock());
 
         $this->assertArrayHasKey('fp_badaboom_js_error_logger', $twigExtension->getFunctions());
     }
@@ -35,7 +35,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
             ->with('fp_badaboom_js_logger_log')
         ;
 
-        $twigExtension = new TwigExtension($router);
+        $twigExtension = new JsExceptionLogExtension($router);
 
         $result = $twigExtension->initErrorLogger();
 

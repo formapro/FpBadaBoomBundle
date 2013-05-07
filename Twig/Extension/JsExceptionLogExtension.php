@@ -1,10 +1,10 @@
 <?php
 
-namespace Fp\BadaBoomBundle\JsLogger;
+namespace Fp\BadaBoomBundle\Twig\Extension;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TwigExtension extends \Twig_Extension
+class JsExceptionLogExtension extends \Twig_Extension
 {
     private $router;
 
