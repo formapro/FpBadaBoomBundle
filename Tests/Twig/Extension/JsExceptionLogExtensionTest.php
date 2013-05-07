@@ -1,5 +1,5 @@
 <?php
-namespace Fp\BadaBoomBundle\Tests\JsLogger;
+namespace Fp\BadaBoomBundle\Tests\Twig\Extension;
 
 use Fp\BadaBoomBundle\Twig\Extension\JsExceptionLogExtension;
 
