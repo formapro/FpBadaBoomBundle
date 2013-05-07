@@ -19,8 +19,14 @@ class JsExceptionLogExtensionTest extends \PHPUnit_Framework_TestCase
     public function shouldDetermineAllRequiredTwigFunction()
     {
         $twigExtension = new JsExceptionLogExtension($this->createRouterMock());
+        $methods = $twigExtension->getFunctions();
 
-        $this->assertArrayHasKey('fp_badaboom_js_error_logger', $twigExtension->getFunctions());
+        $this->assertArrayHasKey('fp_badaboom_js_error_logger', $methods);
+        $this->assertAttributeEquals(
+            'initErrorLogger',
+            'method',
+            $methods['fp_badaboom_js_error_logger']
+        );
     }
 
     /**
