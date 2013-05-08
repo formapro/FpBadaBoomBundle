@@ -5,8 +5,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-use BadaBoom\Bridge\Psr\Logger;
-
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerNormalizersPass;
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddSerializerEncodersPass;
 use Fp\BadaBoomBundle\DependencyInjection\Compiler\AddChainNodesToManagerPass;
@@ -93,7 +91,6 @@ class FpBadaBoomBundle extends Bundle
 
         $exceptionCatcher->start($this->container->getParameter('kernel.debug'));
 
-        /** @var $logger Logger */
         $logger = $this->container->get('fp_badaboom.logger');
         
         foreach ($chainNodeManager->all() as $chainNode) {

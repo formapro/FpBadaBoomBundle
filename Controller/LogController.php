@@ -5,6 +5,7 @@ namespace Fp\BadaBoomBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use BadaBoom\Bridge\Psr\Logger;
 
@@ -19,7 +20,7 @@ class LogController extends Controller
         $context = $request->query->get('context', array());
 
         if (false == isset($context['file'], $context['line'])) {
-            return new Response('', 400);
+            throw new HttpException(400);
         }
 
         $exception = new JavascriptException($message, $context['file'], $context['line']);

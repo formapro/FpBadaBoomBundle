@@ -44,7 +44,11 @@ class LogControllerTest extends WebTestCase
             )
         );
 
-        $exception = $sender->context->getException();
+        $context = $sender->context;
+
+        $this->assertInstanceOf('BadaBoom\Context', $context);
+
+        $exception = $context->getException();
 
         $this->assertInstanceOf('Fp\BadaBoomBundle\Exception\JavascriptException', $exception);
 
@@ -55,6 +59,8 @@ class LogControllerTest extends WebTestCase
 
     /**
      * @test
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function shouldReturnBadRequestPage()
     {
@@ -63,11 +69,6 @@ class LogControllerTest extends WebTestCase
             'msg' => 'Test message',
             'level' => 'error',
         ));
-
-        $this->assertEquals(
-            400,
-            $client->getResponse()->getStatusCode()
-        );
     }
 }
 
