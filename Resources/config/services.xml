@@ -13,6 +13,7 @@
         <parameter key="fp_badaboom.exception_listener.class">Fp\BadaBoomBundle\EventListener\ExceptionListener</parameter>
         <parameter key="fp_badaboom.chain_node_manager.class">Fp\BadaBoomBundle\ChainNode\ChainNodeManager</parameter>
         <parameter key="fp_badaboom.logger.class">BadaBoom\Bridge\Psr\Logger</parameter>
+        <parameter key="fp_badaboom.twig_extension.js_logger.class">Fp\BadaBoomBundle\Twig\Extension\JsExceptionLogExtension</parameter>
     </parameters>
 
     <services>
@@ -51,6 +52,11 @@
         </service>
 
         <service id="logger.exception" alias="fp_badaboom.logger">
+        </service>
+
+        <service id="fp_badaboom.twig_extension.js_logger" class="%fp_badaboom.twig_extension.js_logger.class%">
+            <argument type="service" id="router" />
+            <tag name="twig.extension" />
         </service>
     </services>
 </container>
