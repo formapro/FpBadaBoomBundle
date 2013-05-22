@@ -21,7 +21,7 @@ use BadaBoom\Serializer\Encoder\TextEncoder;
 use BadaBoom\ChainNode\Sender\MailSender;
 use BadaBoom\ChainNode\Sender\LogSender;
 use BadaBoom\Adapter\Logger\NativeLoggerAdapter;
-use BadaBoom\Serializer\Normalizer\DataHolderNormalizer;
+use BadaBoom\Serializer\Normalizer\ContextNormalizer;
 
 use Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ExceptionCatcher;
 use Fp\BadaBoomBundle\ChainNode\SafeChainNodeManager;
@@ -86,7 +86,7 @@ class AppKernel extends Kernel
             $this->chainNodeManager->addProvider('default', new EnvironmentProvider());
 
             $serializer = new Serializer(
-                array(new DataHolderNormalizer()),
+                array(new ContextNormalizer()),
                 array(new TextEncoder())
             );
 
