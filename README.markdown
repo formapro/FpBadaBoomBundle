@@ -99,7 +99,7 @@ class AppKernel extends Kernel
                 ))
             ));
 
-            $domain = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'remixjobs.com';
+            $domain = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'example.com';
             $this->chainNodeManager->addSender('default', new MailSender(
                 new NativeMailerAdapter,
                 $serializer,
