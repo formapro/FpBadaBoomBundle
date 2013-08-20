@@ -37,7 +37,7 @@ class SessionProvider extends AbstractProvider
      */
     public function handle(Context $context)
     {
-        if ($this->session) {
+        if ($this->session && $this->session->isStarted()) {
             $context->setVar($this->sectionName, $this->session->all());
         }
 
