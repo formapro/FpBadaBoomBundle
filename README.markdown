@@ -5,27 +5,30 @@ An example of AppKernel
 ```php
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Serializer\Serializer;
-
+use BadaBoom\Adapter\Cache\ArrayCacheAdapter;
+use BadaBoom\Adapter\Mailer\NativeMailerAdapter;
+use BadaBoom\Adapter\Logger\NativeLoggerAdapter;
+use BadaBoom\ChainNode\Sender\NewrelicSender;
+use BadaBoom\ChainNode\Filter\DuplicateExceptionFilter;
+use BadaBoom\ChainNode\Sender\SentrySender;
 use BadaBoom\ChainNode\Provider\ExceptionSummaryProvider;
 use BadaBoom\ChainNode\Provider\ExceptionSubjectProvider;
 use BadaBoom\ChainNode\Provider\ServerProvider;
 use BadaBoom\ChainNode\Provider\SessionProvider;
 use BadaBoom\ChainNode\Provider\EnvironmentProvider;
 use BadaBoom\ChainNode\Provider\ExceptionStackTraceProvider;
-use BadaBoom\Adapter\Mailer\NativeMailerAdapter;
-use BadaBoom\DataHolder\DataHolder;
-use BadaBoom\Serializer\Encoder\TextEncoder;
 use BadaBoom\ChainNode\Sender\MailSender;
 use BadaBoom\ChainNode\Sender\LogSender;
-use BadaBoom\Adapter\Logger\NativeLoggerAdapter;
-use BadaBoom\Serializer\Normalizer\ContextNormalizer;
-
+use BadaBoom\DataHolder\DataHolder;
+use BadaBoom\Serializer\Encoder\TextEncoder;
+use BadaBoom\Serializer\Encoder\LineEncoder;
+use BadaBoom\Serializer\Normalizer\RecursionSafeContextNormalizer;
 use Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ExceptionCatcher;
 use Fp\BadaBoomBundle\ChainNode\SafeChainNodeManager;
 use Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ChainNode\SymfonyExceptionHandlerChainNode;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Serializer\Serializer;
 
 class AppKernel extends Kernel
 {
@@ -47,14 +50,17 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = array(
-            // ...
-            
             new Fp\BadaBoomBundle\FpBadaBoomBundle($this->exceptionCatcher, $this->chainNodeManager),
+
+            //...
         );
 
         return $bundles;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function init()
     {
         $this->exceptionCatcher = new ExceptionCatcher;
@@ -69,14 +75,22 @@ class AppKernel extends Kernel
         }
     }
 
-    public function initializeChainNodeManager()
+    protected function initializeChainNodeManager()
     {
+        if (extension_loaded('newrelic')) {
+            $this->chainNodeManager->addSender('default', new NewrelicSender());
+        }
+
         $this->symfonyExceptionHandlerChainNode = new SymfonyExceptionHandlerChainNode($this->isDebug());
         $this->chainNodeManager->addSender('default', $this->symfonyExceptionHandlerChainNode);
-        
+
+        $this->chainNodeManager->addFilter('default', new DuplicateExceptionFilter(new ArrayCacheAdapter));
+
         // prod env
         if (false == $this->isDebug()) {
-            $recipients = array('acme@example.com');
+            $recipients = array(
+                'dev@example.com',
+            );
 
             $this->chainNodeManager->addProvider('default', new ExceptionSubjectProvider());
             $this->chainNodeManager->addProvider('default', new ExceptionSummaryProvider());
@@ -86,8 +100,8 @@ class AppKernel extends Kernel
             $this->chainNodeManager->addProvider('default', new EnvironmentProvider());
 
             $serializer = new Serializer(
-                array(new ContextNormalizer()),
-                array(new TextEncoder())
+                [new RecursionSafeContextNormalizer],
+                [new TextEncoder, new LineEncoder]
             );
 
             touch($logFile = $this->getRootDir().'/logs/'.$this->getEnvironment().'-exceptions.log');
@@ -95,7 +109,7 @@ class AppKernel extends Kernel
                 new NativeLoggerAdapter($logFile),
                 $serializer,
                 new DataHolder(array(
-                    'format' => 'text'
+                    'format' => 'line'
                 ))
             ));
 
@@ -111,12 +125,23 @@ class AppKernel extends Kernel
                     'headers' => array()
                 ))
             ));
+            if (isset($_SERVER['SENTRY_DSN'])) {
+                $this->chainNodeManager->addSender(
+                    'default',
+                    new SentrySender(new \Raven_Client($_SERVER['SENTRY_DSN']))
+                );
+            }
         }
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    /**
+     * {@inheritDoc}
+     */
+    public function boot()
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'_local.yml');
+        parent::boot();
+
+        $this->symfonyExceptionHandlerChainNode->setEnabled(false);
     }
 }
 ```
