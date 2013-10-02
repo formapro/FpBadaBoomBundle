@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.3.2",
         "fp/badaboom": "dev-not-approved",
-        "symfony/symfony": ">=2.0,<2.2"
+        "symfony/symfony": "~2.1"
     },
     "require-dev": {
         "fp/fumocker": "1.0.*",
