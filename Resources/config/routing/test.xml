@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="fp_badaboom_test_exception" pattern="/exception">
+        <default key="_controller">FpBadaBoomBundle:Test:exception</default>
+    </route>
+
+    <route id="fp_badaboom_test_log_exception" pattern="/log-exception">
+        <default key="_controller">FpBadaBoomBundle:Test:logException</default>
+    </route>
+
+    <route id="fp_badaboom_test_error_recoverable" pattern="/error-recoverable">
+        <default key="_controller">FpBadaBoomBundle:Test:errorRecoverable</default>
+    </route>
+
+    <route id="fp_badaboom_test_error_fatal" pattern="/error-fatal">
+        <default key="_controller">FpBadaBoomBundle:Test:errorFatal</default>
+    </route>
+
+    <route id="fp_badaboom_test_error_js" pattern="/error-js">
+        <default key="_controller">FpBadaBoomBundle:Test:errorJs</default>
+    </route>
+</routes>
