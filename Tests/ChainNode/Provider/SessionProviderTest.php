@@ -29,7 +29,7 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldAddSessionDataToDefaultSection()
+    public function shouldAddSessionDataToDefaultSectionIfStarted()
     {
         $expectedSessionData = array(
             'foo' => 'foo',
@@ -42,6 +42,11 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('all')
             ->will($this->returnValue($expectedSessionData))
+        ;
+        $sessionMock
+            ->expects($this->once())
+            ->method('isStarted')
+            ->will($this->returnValue(true))
         ;
 
         $contextMock = $this->createContextMock();
@@ -75,12 +80,66 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $sessionProvider = new SessionProvider(
-            $this->createSessionMock(),
-            $expectedCustomSectionName
-        );
+        $sessionMock = $this->createSessionMock();
+        $sessionMock
+            ->expects($this->once())
+            ->method('isStarted')
+            ->will($this->returnValue(true))
+        ;
+
+        $sessionProvider = new SessionProvider($sessionMock, $expectedCustomSectionName);
 
         $sessionProvider->handle($contextMock);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoNothingAndDelegateHandlingToNextNodeIfSessionNotSet()
+    {
+        $context = $this->createContextMock();
+
+        $nextChainNodeMock = $this->createChainNodeMock();
+        $nextChainNodeMock
+            ->expects($this->once())
+            ->method('handle')
+            ->with($context)
+        ;
+
+        $sessionProvider = new SessionProvider;
+
+        $sessionProvider->nextNode($nextChainNodeMock);
+
+        $sessionProvider->handle($context);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoNothingAndDelegateHandlingToNextNodeIfSessionNotStarted()
+    {
+        $context = $this->createContextMock();
+
+        $nextChainNodeMock = $this->createChainNodeMock();
+        $nextChainNodeMock
+            ->expects($this->once())
+            ->method('handle')
+            ->with($context)
+        ;
+
+
+        $sessionMock = $this->createSessionMock();
+        $sessionMock
+            ->expects($this->once())
+            ->method('isStarted')
+            ->will($this->returnValue(false))
+        ;
+
+        $sessionProvider = new SessionProvider($sessionMock);
+
+        $sessionProvider->nextNode($nextChainNodeMock);
+
+        $sessionProvider->handle($context);
     }
 
     /**
