@@ -18,6 +18,11 @@ class SymfonyExceptionHandlerChainNode extends AbstractChainNode
     protected $debug;
 
     /**
+     * @var boolean
+     */
+    protected $isEnabled = true;
+
+    /**
      * @param boolean $debug
      */
     public function __construct($debug)
@@ -26,10 +31,26 @@ class SymfonyExceptionHandlerChainNode extends AbstractChainNode
     }
 
     /**
-     * {@inheritdoc}
+     * This allows to disable handler on boot.
+     * If not it will show gray exception message near the cool one of symfony exception controller.
+     *
+     * @var boolean $boolean
+     */
+    public function setEnabled($boolean)
+    {
+        $this->isEnabled = !!$boolean;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function handle(Context $context)
     {
+        if (false == $this->isEnabled) {
+            $this->handleNextNode($context);
+
+            return;
+        }
         if ('cli' === php_sapi_name()) {
             $this->handleNextNode($context);
             
