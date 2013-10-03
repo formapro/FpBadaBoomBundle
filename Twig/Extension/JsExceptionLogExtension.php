@@ -2,6 +2,7 @@
 
 namespace Fp\BadaBoomBundle\Twig\Extension;
 
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class JsExceptionLogExtension extends \Twig_Extension
@@ -22,7 +23,11 @@ class JsExceptionLogExtension extends \Twig_Extension
 
     public function initErrorLogger($level = 'error')
     {
-        $url = addslashes($this->router->generate('fp_badaboom_js_logger_log'));
+        try {
+            $url = addslashes($this->router->generate('fp_badaboom_js_logger_log'));
+        } catch (RouteNotFoundException $e) {
+            return "<script>'js log url not defined';</script>";
+        }
 
         $js = <<<JS
 (function () {
