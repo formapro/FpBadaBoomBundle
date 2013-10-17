@@ -43,7 +43,7 @@ class AppKernel extends Kernel
     protected $chainNodeManager;
 
     /**
-     * @var \Rj\CoreBundle\Badaboom\SymfonyExceptionHandlerChainNode
+     * @var \Fp\BadaBoomBundle\Bridge\UniversalErrorCatcher\ChainNode\SymfonyExceptionHandlerChainNode
      */
     protected $symfonyExceptionHandlerChainNode;
 
